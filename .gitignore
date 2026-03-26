@@ -1,0 +1,27 @@
+# dependências
+node_modules/
+
+# variáveis de ambiente
+.env
+
+# build
+dist
+build
+
+# expo
+.expo
+.expo-shared
+
+# logs
+npm-debug.log
+
+# testes
+coverage
+
+# OS
+.DS_Store
+
+#IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
