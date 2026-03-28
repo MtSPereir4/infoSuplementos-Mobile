@@ -102,7 +102,7 @@ Responsável pela configuração da conexão com o banco de dados.
 
 - Integrar variáveis de ambiente
 
-### Dependências principais 
+### Dependências principais
 
 O backend utiliza algumas bibliotecas essenciais para funcionamento da aplicação:
 
@@ -117,7 +117,6 @@ O backend utiliza algumas bibliotecas essenciais para funcionamento da aplicaç�
 - **helmet**: Adiciona camadas de segurança HTTP através de headers.
 
 - **morgan**: Middleware para registro de logs das requisições, útil para debugging e monitoramento.
-
 
 ### Fluxo da aplicação
 
@@ -398,11 +397,13 @@ revert: desfazer alteração no login
 Exemplo:
 
 ❌ Ruim:
+
 ```text
 feat: login e cadastro e alteração no banco
 ```
 
 ✔ Bom:
+
 ```text
 feat(auth): criar endpoint de login
 feat(auth): criar endpoint de cadastro
@@ -424,6 +425,7 @@ Pull Requests devem descrever claramente as alterações realizadas e permitir q
 ### Título do PR
 
 Seguir padrão:
+
 ```text
 tipo: descrição
 ```
