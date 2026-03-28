@@ -243,19 +243,28 @@ git checkout -b feature/nome-da-feature
 
 3. Desenvolver a funcionalidade
 
-4. Realizar commits seguindo o padrão definido
+4. Executar os scripts de formatação a partir do diretório raiz
 
-5. Enviar para o repositório remoto
+5. Realizar commits seguindo o padrão definido
+
+```bash
+git add arquivos-alterados
+git commit
+```
+
+Escreva o commit no seu editor de código padrão, salve e feche o editor
+
+6. Enviar para o repositório remoto
 
 ```bash
 git push origin feature/nome-da-feature
 ```
 
-6. Abrir Pull Request (PR) para `develop`
+7. Abrir Pull Request (PR) para `develop`
 
-7. Após revisão, realizar merge
+8. Após revisão, realizar merge
 
-8. Quando estável, `develop` é mesclada em `main`
+9. Quando estável, `develop` é mesclada em `main`
 
 ---
 
@@ -265,6 +274,21 @@ Seguimos o padrão:
 
 ```text
 tipo(escopo): descrição
+
+corpo opcional explicando o que foi feito e por quê
+
+rodapé opcional
+```
+
+Exemplo de commit:
+
+```text
+feat(auth): adicionar autenticação com JWT
+
+Implementa geração de token JWT no login e middleware
+de validação para rotas protegidas.
+
+Closes #12
 ```
 
 ### Tipos de commits
@@ -361,14 +385,35 @@ revert: desfazer alteração no login
 
 ## Boas práticas de commits
 
+- Um commit deve representar uma única mudança lógica. Ex:
+
 - Escrever mensagens curtas e objetivas
+
 - Utilizar verbo no infinitivo
+
 - Um commit deve representar uma única mudança
+
 - Evitar mensagens genéricas
+
+Exemplo:
+
+❌ Ruim:
+```text
+feat: login e cadastro e alteração no banco
+```
+
+✔ Bom:
+```text
+feat(auth): criar endpoint de login
+feat(auth): criar endpoint de cadastro
+refactor(database): alterar estrutura da tabela users
+```
 
 ---
 
 ## Pull Requests (PR)
+
+Pull Requests devem descrever claramente as alterações realizadas e permitir que outros membros revisem o código antes da integração na branch `develop`.
 
 ### Antes de abrir um PR:
 
@@ -376,12 +421,19 @@ revert: desfazer alteração no login
 - Revise seu próprio código
 - Garanta que segue os padrões definidos
 
-### Nome do PR
+### Título do PR
 
-Seguir padrão semelhante ao commit:
+Seguir padrão:
+```text
+tipo: descrição
+```
+
+Exemplo:
 
 ```text
 feat: adicionar autenticação de usuários
+fix: corrigir validação de senha
+refactor: reorganizar camada de serviços
 ```
 
 ### Descrição do PR
