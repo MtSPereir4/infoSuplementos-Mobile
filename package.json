@@ -7,12 +7,12 @@
   "workspaces": [
     "backend",
     "mobile"
-    ],
+  ],
   "scripts": {
-    "lint": "eslint . --ext .js,.ts --ignore-path .eslintignore && npm run lint --workspace backend && npm run lint --workspace mobile",
-    "lint:fix": "eslint . --ext .js,.ts --fix --ignore-path .eslintignore && npm run lint:fix --workspace backend && npm run lint:fix --workspace mobile",
-    "format": "prettier --write \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore && npm run format --workspace backend && npm run format --workspace mobile",
-    "format:check": "prettier --check \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore && npm run format:check --workspace backend && npm run format:check --workspace mobile",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "format": "prettier --write \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore",
     "start:backend": "npm --workspace backend run start",
     "dev:backend": "npm --workspace backend run dev",
     "start:mobile": "npm --workspace mobile run start"
