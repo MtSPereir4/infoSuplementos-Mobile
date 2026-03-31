@@ -1,126 +1,392 @@
-# Estrutura do Projeto
+# Arquitetura do projeto 
+
+Este documento descreve a arquitetura geral do projeto InfoSuplementos, incluindo organização de diretórios, arquitetura do backend, banco de dados, Docker e fluxo da aplicação.
+
+O objetivo desta arquitetura é garantir:
+
+- Organização do código
+- Separação de responsabilidades
+- Facilidade de manutenção
+- Escalabilidade
+- Facilidade para trabalho em equipe
+- Padronização do desenvolvimento
+
+---
+
+## Arquitetura geral do projeto
 
 ```text
-infoSuplementos-Mobile
-│
-├── backend/        # API Node.js (regras de negócio e acesso ao banco)
-├── mobile/         # Aplicação mobile (React Native + Expo)
-├── docs/           # Documentação do projeto
-│
-├── .gitignore      # Arquivos ignorados pelo Git
-├── .prettierrc     # Padronização de código
-├── .vscode         # Diretório com configurações recomendadas par a IDE
-├── README.md       # Documentação estrutural do projeto
-└── LICENSE
+Mobile (Expo / React Native)
+        ↓
+Backend API (Node.js + Express)
+        ↓
+Services (Regras de negócio)
+        ↓
+Repositories (Acesso ao banco)
+        ↓
+MySQL Database
 ```
 
 ---
 
-## Arquitetura do Backend
+## Estrutura de diretórios
+```text
+infosuplementos/
+│
+├── backend/            # API Node.js (regras de negócio e acesso ao banco)
+├── mobile/             # Aplicação mobile (React Native + Expo)
+├── database/           # Inits sql, migrations e seeds
+├── docker/             # Arquivos de configuração Docker
+├── docs/               # Documentação do projeto
+├── eslint.config.js    # Arquivo de configurações do eslint
+├── .env                # Variáveis de ambiente
+├── .env.example        # Exemplo do variáveis de ambiente
+├── .gitignore          # Arquivos ignorados pelo Git
+├── .prettierrc         # Arquivo de configuração do prettier 
+├── .vscode             # Diretório com configurações recomendadas para a IDE
+├── README.md       
+```
 
-O backend segue uma arquitetura em camadas inspirada no padrão **MVC (Model-View-Controller)**, com separação de responsabilidades para facilitar manutenção, escalabilidade e trabalho em equipe.
+---
 
-### Estrutura interna
+## Variáveis de ambiente
+
+O projeto utiliza variáveis de ambiente para configuração do sistema e dados sensíveis.
+
+O arquivo .env deve ficar na raiz do projeto.
+
+Exemplo:
+```env
+# Database
+DB_HOST=mysql
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=infosuplementos
+
+# Backend
+JWT_SECRET=supersecret
+API_PORT=3000
+
+# Docker
+MYSQL_ROOT_PASSWORD=root
+```
+
+---
+
+## Estrutura do backend
+
+O backend segue uma arquitetura em camadas inspirada no padrão:
+
+```text
+MVC + Service + Repository Pattern
+```
+
+Essa arquitetura separa responsabilidades e melhora a organização do sistema.
+
+### Estrutura de diretórios do backend
 
 ```text
 backend/src
 │
-├── controllers/    # Camada de comunicação req/res (HTTP)
-├── routes/         # Definição das rotas da API
-├── services/       # Regras de negócio
-├── models/         # Manipulação de dados (interação com o banco de dados)
-├── database/       # Configuração do banco de dados
+├── controllers/
+├── routes/
+├── services/
+├── repositories/
+├── models/
+├── middlewares/
+├── database/
+├── utils/
 │
-└── server.js       # Ponto de entrada da aplicação
+└── server.js
 ```
 
----
+### Dependências do backend
+
+O backend utiliza algumas bibliotecas essenciais para funcionamento da aplicação:
+
+- **express**: Framework para criação da API e gerenciamento de rotas e requisições HTTP.
+- **mysql2**: Responsável pela conexão e comunicação com o banco de dados MySQL.
+- **dotenv**: Gerenciamento de variáveis de ambiente, permitindo manter dados sensíveis fora do código.
+- **cors**: Permite controlar quais origens podem acessar a API (segurança entre frontend e backend).
+- **helmet**: Adiciona camadas de segurança HTTP através de headers.
+- **morgan**: Middleware para registro de logs das requisições, útil para debugging e monitoramento.
+- **nodemon** (dev): reload automático em desenvolvimento.
+
 
 ### Responsabilidade de cada camada
 
-#### controllers/
+#### Routes
 
-Responsável por lidar com as requisições HTTP.
+Responsável por definir os endpoints da API e mapear cada rota para seu controller.
 
-- Recebe dados do cliente (`req`)
-- Chama os serviços
-- Retorna respostas (`res`)
-
----
-
-#### services/
-
-Contém a lógica de negócio da aplicação.
-
-- Validações
-- Processamentos
-- Regras do sistema
-
----
-
-#### models/
-
-Responsável pela comunicação com o banco de dados.
-
-- Consultas SQL
-- CRUD
-- Manipulação de dados
-
----
-
-#### database/
-
-Configuração da conexão com o banco de dados.
-
-- Pool de conexões
-- Integração com variáveis de ambiente
-
----
-
-#### routes/
-
-Define os endpoints da API. Deve conectar as rotas (endpoints) aos controllers.
-
-Exemplo:
-
-```http
-GET /api/users
-POST /api/supplements
+##### Exemplo:
+```text
+POST /api/login
+GET /api/supplements
+POST /api/users
 ```
 
----
+##### Exemplo de rota:
+```javascript
+router.post('/login', authController.login);
+router.get('/supplements', supplementController.getAll);
+```
 
-#### server.js
+#### Controllers
 
-Ponto inicial da aplicação.
+Responsáveis por lidar com requisições HTTP.
 
-Responsável por:
+##### Funções do controller:
 
-- Criar o servidor
-- Configurar middlewares
-- Registrar rotas
-- Iniciar a API
+- Receber requisição (req)
+- Extrair dados
+- Chamar services
+- Retornar resposta (res)
+- Definir status HTTP
 
----
+O controller não deve conter regra de negócio.
 
-## Fluxo da aplicação
+##### Exemplo:
+
+```javascript
+async function login(req, res) {
+    const { email, password } = req.body;
+
+    const user = await authService.login(email, password);
+
+    return res.json(user);
+}
+```
+
+#### Services
+
+Camada responsável pelas regras de negócio da aplicação.
+
+##### Funções do service:
+
+- Validações de negócio
+- Processamento de dados
+- Regras do sistema
+- Orquestrar repositories
+- Chamar models (mappers)
+
+##### Exemplo:
+
+```javascript
+async function login(email, password) {
+    const user = await userRepository.findByEmail(email);
+
+    if (!user) {
+        throw new Error("Usuário não encontrado");
+    }
+
+    return mapUser(user);
+}
+```
+
+#### Repositories
+
+Responsáveis pelo acesso ao banco de dados.
+
+##### Funções do repository:
+
+- Executar comandos SQL como:
+    - Queries
+    - Inserts
+    - Updates
+    - Deletes
+
+##### Exemplo:
+
+```javascript
+async function findByEmail(email) {
+    const [rows] = await db.query(
+        "SELECT * FROM users WHERE email = ?",
+        [email]
+    );
+
+    return rows[0];
+}
+```
+
+#### Models
+
+Os models representam as entidades do sistema e são responsáveis por mapear os dados do banco para objetos JavaScript.
+
+Eles funcionam como um mapper, convertendo dados do banco para o formato usado pela aplicação.
+
+##### Exemplo:
+
+```javascript
+function mapUser(row) {
+    if (!row) return null;
+
+    return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        createdAt: row.created_at
+    };
+}
+```
+##### Os models ajudam a:
+
+- Padronizar dados
+- Remover campos sensíveis (ex: password)
+- Converter snake_case para camelCase
+- Evitar repetição de código
+- Desacoplar banco da API
+
+#### Middlewares
+
+Middlewares interceptam a requisição antes de chegar ao controller.
+
+##### Funções dos middlewares:
+
+- Autenticação
+- Validação
+- Logs
+- Tratamento de erros
+- Segurança
+
+##### Estrutura:
 
 ```text
-Cliente → Routes → Controller → Service → Model → Database
-                                              ↓
-Cliente ← Response ← Controller ← Service ← Model
+middlewares/
+    auth.middleware.js
+    error.middleware.js
+    logger.middleware.js
+    validate.middleware.js
 ```
 
-## Variáveis de ambiente
+##### Exemplo:
 
-O projeto utiliza variáveis de ambiente para dados sensíveis.
+```javascript
+function authMiddleware(req, res, next) {
+    const token = req.headers.authorization;
 
-Crie um arquivo `.env` na pasta `backend/` baseado no exemplo:
+    if (!token) {
+        return res.status(401).json({ error: 'Token não fornecido' });
+    }
 
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=
-JWT_SECRET=
+    next();
+}
+```
+
+#### Database (backend/src/database)
+
+Esse diretório contém apenas a conexão com o banco de dados.
+
+##### Exemplo:
+
+```javascript
+const mysql = require('mysql2/promise');
+
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
+module.exports = pool;
+```
+
+#### Utils
+
+Funções auxiliares reutilizáveis:
+
+##### Exemplos:
+
+```text
+Hash de senha
+Geração de token
+Formatação de datas
+Validações genéricas
+```
+
+---
+
+## Fluxo da Aplicação
+
+O fluxo padrão de uma requisição segue a seguinte ordem:
+
+```text
+Cliente
+  ↓
+Routes
+  ↓
+Middleware
+  ↓
+Controller
+  ↓
+Service
+  ↓
+Repository
+  ↓
+Database
+  ↓
+Repository
+  ↓
+Service
+  ↓
+Controller
+  ↓
+Response → Cliente
+```
+
+### Fluxo resumido
+
+```text
+Route → Middleware → Controller → Service → Repository → Database
+```
+
+---
+
+## Estrutura do Banco de Dados
+
+Os scripts do banco não ficam dentro do backend. Eles ficam na pasta `database/`.
+
+### Estrutura de diretórios:
+
+```text
+database/
+│
+├── init/
+├── migrations/
+└── seeds/
+```
+
+### init
+
+Scripts executados quando o banco é criado pela primeira vez.
+
+#### Exemplo:
+
+```text
+01_create_database.sql
+02_create_tables.sql
+```
+
+### migrations
+
+Scripts para alterações futuras no banco de dados.
+
+#### Exemplo:
+
+```text
+2026_03_30_create_users.sql
+2026_04_02_add_comments.sql
+```
+
+### seeds
+
+Scripts para inserir dados iniciais ou de teste.
+
+#### Exemplo:
+
+```text
+users_seed.sql
+supplements_seed.sql
 ```
