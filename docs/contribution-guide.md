@@ -1,3 +1,4 @@
+
 # Guia de Contribuição
 
 Este documento define os padrões e boas práticas para contribuição no projeto **InfoSuplementos**.
