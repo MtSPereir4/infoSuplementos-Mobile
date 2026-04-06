@@ -4,7 +4,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 
-import routes from './src/routes/routes.js';
+// CORREÇÃO: Removido o '/src' do caminho, pois o server.js já está dentro de src
+import routes from './routes/routes.js';
 
 dotenv.config();
 
