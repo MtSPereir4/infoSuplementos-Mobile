@@ -308,7 +308,7 @@ Validações genéricas
 
 ---
 
-## Fluxo da Aplicação
+### Fluxo da Aplicação (backend)
 
 O fluxo padrão de uma requisição segue a seguinte ordem:
 
@@ -336,10 +336,210 @@ Controller
 Response → Cliente
 ```
 
-### Fluxo resumido
+#### Fluxo resumido
 
 ```text
 Route → Middleware → Controller → Service → Repository → Database
+```
+
+---
+
+## Estrutura do mobile
+
+O mobile é desenvolvido utilizando **Expo + React Native**, seguindo uma arquitetura baseada em separação de responsabilidades inspirada no backend.
+
+### Estrutura de diretórios
+
+```text
+mobile/
+│
+├── src/
+│    ├── components/   # Componentes reutilizáveis (UI)
+│    ├── screens/      # Telas da aplicação
+│    ├── services/     # Comunicação com a API
+│    ├── hooks/        # Lógica e estado reutilizável
+│    ├── utils/        # Funções auxiliares
+│    ├── styles/       # Tema, cores e estilos globais
+│    └── assets/       # Imagens e arquivos internos
+│
+├── assets/            # Assets globais do Expo (ícone, splash)
+├── App.js             # Ponto de entrada da aplicação
+├── index.js           # Bootstrap do Expo (não deve ser alterado)
+├── package.json
+└── app.json           # Configuração do app Expo
+```
+
+### Responsabilidade de cada camada
+
+#### App.js
+
+Ponto de entrada da aplicação.
+
+##### Funções do App:
+
+- Inicializar o app
+- Definir a tela inicial
+- Configurar navegação (futuramente)
+- Configurar providers globais (Context API)
+
+##### Exemplo:
+```javascript
+import HomeScreen from "./src/screens/Home";
+
+export default function App() {
+    return <HomeScreen />;
+}
+```
+
+#### Screens
+
+Representam as telas da aplicação.
+
+##### Funções das screens:
+
+- Renderizar interface
+- Consumir hooks
+- Interagir com o usuário
+
+##### Estrutura recomendada:
+```text
+screens/
+ ├── Home/
+ │    ├── index.js
+ │    └── styles.js
+ │
+ ├── Login/
+ │    ├── index.js
+ │    └── styles.js
+```
+
+##### Exemplo:
+```javascript
+import { View, Text } from "react-native";
+import { useExample } from "../../hooks/useExample";
+
+export default function HomeScreen() {
+    const { message } = useExample();
+
+    return (
+        <View>
+            <Text>{message}</Text>
+        </View>
+    );
+}
+```
+
+#### Components
+
+Componentes reutilizáveis de interface.
+
+##### Funções dos components:
+
+- Evitar repetição de código
+- Padronizar UI
+- Melhorar organização
+
+##### Exemplos:
+
+- Button
+- Input
+- Card
+- Modal
+
+#### Hooks
+
+Responsáveis pela lógica da aplicação e gerenciamento de estado.
+
+##### Funções dos hooks:
+
+- Gerenciar estados (useState)
+- Controlar efeitos (useEffect)
+- Orquestrar chamadas aos services
+- Reutilizar lógica entre telas
+
+##### Exemplo:
+```javascript
+import { useState } from "react";
+import { getMessage } from "../services/example.service";
+
+export function useExample() {
+    const [message, setMessage] = useState("");
+
+    function fetchMessage() {
+        const data = getMessage();
+        setMessage(data);
+    }
+
+    return { message, fetchMessage };
+}
+```
+
+#### Services
+
+Responsáveis pela comunicação com o backend.
+
+##### Funções dos services:
+
+- Fazer requisições HTTP (GET, POST, PUT, DELETE)
+- Centralizar chamadas à API
+- Isolar detalhes de comunicação
+- Padrão de nomenclatura:
+    - auth.service.js
+    - user.service.js
+    - supplement.service.js
+
+##### Exemplo:
+```javascript
+export function getMessage() {
+    return "Mensagem simulada";
+}
+```
+
+#### Utils
+
+Funções auxiliares reutilizáveis.
+
+##### Exemplos:
+
+- Formatação de texto
+- Formatação de moeda
+- Validações simples
+
+#### Styles
+
+Responsável por centralizar estilos globais.
+
+##### Exemplos:
+
+- cores
+- tipografia
+- temas
+
+### Fluxo da aplicação (mobile)
+
+O fluxo interno do mobile segue a seguinte ordem:
+
+```text
+Usuário
+ ↓
+Screen
+ ↓
+Hook
+ ↓
+Service
+ ↓
+API Backend
+ ↓
+Resposta
+ ↓
+Hook (atualiza estado)
+ ↓
+Screen (re-renderiza UI)
+```
+
+#### Fluxo resumido
+```text
+Screen → Hook → Service → API
 ```
 
 ---
@@ -348,7 +548,7 @@ Route → Middleware → Controller → Service → Repository → Database
 
 Os scripts do banco não ficam dentro do backend. Eles ficam na pasta `database/`.
 
-### Estrutura de diretórios:
+### Estrutura de diretórios
 
 ```text
 database/
