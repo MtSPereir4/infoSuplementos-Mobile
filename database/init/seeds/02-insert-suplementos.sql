@@ -6,8 +6,18 @@ SET NAMES utf8mb4;
 
 -- Creatinas Aprovadas 0-5%
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('Creatina 100% Pure', 'Absolut Nutrition', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+      nome_suplemento,
+      marca_suplemento,
+      tipo_suplemento,
+      status_aprovacao,
+      detalhes_laudo,
+      orgao_laudo,
+      data_laudo,
+      id_usuario_cadastro,
+      status_suplemento
+)
+ VALUES ('Creatina 100% Pure', 'Absolut Nutrition', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINE', 'ADAPTOGEN', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINE SUPER', 'ADAPTOGEN', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('HD CRET', 'ADAPTOGEN', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -60,11 +70,22 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 ('CREATINE', 'ZUPLER', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 0%-5%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO');
 
 
---Creatinas Aprovadas 5.1-10%
+-- Creatinas Aprovadas 5.1-10%
 
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('CREATINA MONOHIDRATADA', '+Mu', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 5,1%-10%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+     nome_suplemento,
+     marca_suplemento,
+     tipo_suplemento,
+     status_aprovacao,
+     detalhes_laudo,
+     orgao_laudo,
+     data_laudo,
+     id_usuario_cadastro,
+     status_suplemento
+)
+
+VALUES ('CREATINA MONOHIDRATADA', '+Mu', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 5,1%-10%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINA PLUS', 'CANIBAL INC.', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 5,1%-10%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Evo Creatine', 'Evorox Nutrition', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 5,1%-10%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINE DRIVE', 'NUTREX RESEARCH', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 5,1%-10%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -77,10 +98,21 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 
 
 
---Creatinas Aprovadas 10.1-20%
+-- Creatinas Aprovadas 10.1-20%
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('PREMIUM CREATINA', 'BRN FOODS', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 10,1%-20%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+      nome_suplemento,
+      marca_suplemento,
+      tipo_suplemento,
+      status_aprovacao,
+      detalhes_laudo,  
+      orgao_laudo,
+      data_laudo,
+      id_usuario_cadastro,
+      status_suplemento
+)
+
+VALUES ('PREMIUM CREATINA', 'BRN FOODS', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 10,1%-20%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINA', 'HARDCORE SPORTS NUTRITION', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 10,1%-20%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINE POWER', 'PROFIT LAB', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 10,1%-20%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('BRUTAL CREATINE', 'RED', 'CREATINA', 'APROVADO', 'Laudo ABENUTRI - Aprovado (variação 10,1%-20%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -92,11 +124,22 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 
 
 
---Creatinas Reprovadas 21-99%
+-- Creatinas Reprovadas 21-99%
 
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('Dark Dragon', 'BODY NUTRY', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -21% a -99%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+     nome_suplemento,
+     marca_suplemento,
+     tipo_suplemento,
+     status_aprovacao,
+     detalhes_laudo,
+     orgao_laudo,
+     data_laudo,
+     id_usuario_cadastro,
+     status_suplemento
+)
+
+VALUES ('Dark Dragon', 'BODY NUTRY', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -21% a -99%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINA ENERGY', 'BODY NUTRY', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -21% a -99%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINA 100%', 'Melius Nutrition', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -21% a -99%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('CREATINA', 'MUSCLE FULL', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -21% a -99%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -107,12 +150,23 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 
 
 
---Creatinas Reprovadas 100%
+-- Creatinas Reprovadas 100%
 
 
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('Creatine Monohidratada', 'AGE', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -100%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+     nome_suplemento,
+     marca_suplemento,
+     tipo_suplemento,
+     status_aprovacao,
+     detalhes_laudo,
+     orgao_laudo,
+     data_laudo,
+     id_usuario_cadastro,
+     status_suplemento
+)
+
+VALUES ('Creatine Monohidratada', 'AGE', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -100%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Creatin', 'Cellucor', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -100%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Creatina Monohidrate', 'Dymatrix Nutrition', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -100%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Creatina Monohidratada', 'GENERIC LABS', 'CREATINA', 'REPROVADO', 'Laudo ABENUTRI - Reprovado (variação -100%)', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -126,11 +180,22 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 
 
 
---Whey Protein Aprovados
+-- Whey Protein Aprovados
 
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('Whey 100% Pure', 'Absolut Nutrition', 'WHEY_PROTEIN', 'APROVADO', 'Laudo ABENUTRI - Aprovado. Não contém indícios de Amino Spiking. Variação Glicina: -14,22%, Treonina: -12.02%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+INSERT INTO suplementos (
+     nome_suplemento,
+     marca_suplemento,
+     tipo_suplemento,
+     status_aprovacao,
+     detalhes_laudo,
+     orgao_laudo,
+     data_laudo,
+     id_usuario_cadastro,
+     status_suplemento
+)
+
+VALUES ('Whey 100% Pure', 'Absolut Nutrition', 'WHEY_PROTEIN', 'APROVADO', 'Laudo ABENUTRI - Aprovado. Não contém indícios de Amino Spiking. Variação Glicina: -14,22%, Treonina: -12.02%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('3 Whealth', 'Active Nutrition', 'WHEY_PROTEIN', 'APROVADO', 'Laudo ABENUTRI - Aprovado. Não contém indícios de Amino Spiking. Variação Glicina: -18,50%, Treonina: -19,96%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('100% Whey', 'Age – Intlab Suplementos Nutricionais', 'WHEY_PROTEIN', 'APROVADO', 'Laudo ABENUTRI - Aprovado. Não contém indícios de Amino Spiking. Variação Glicina: 04,65%, Treonina: 18,08%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Atletica Nutritrion', 'Atletica Nutritrion', 'WHEY_PROTEIN', 'APROVADO', 'Laudo ABENUTRI - Aprovado. Não contém indícios de Amino Spiking. Variação Glicina: 14,35%, Treonina: -18,06%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
@@ -188,13 +253,23 @@ INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhe
 
 
 
---Whey Protein Reprovados
+-- Whey Protein Reprovados
 
 
 
+INSERT INTO suplementos (
+     nome_suplemento,
+     marca_suplemento,
+     tipo_suplemento,
+     status_aprovacao,
+     detalhes_laudo,
+     orgao_laudo,
+     data_laudo,
+     id_usuario_cadastro,
+     status_suplemento
+)
 
-INSERT INTO suplementos (nome, marca, tipo_suplemento, status_aprovacao, detalhes_laudo, orgao_laudo, data_laudo, id_usuario_cadastro, status_suplemento) VALUES
-('Hyper Whey', 'XTR Health Research', 'WHEY_PROTEIN', 'REPROVADO', 'Laudo ABENUTRI - Reprovado. Contém indícios de Amino Spiking. Variação Glicina: -7,91%, Treonina: 39,80%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
+VALUES ('Hyper Whey', 'XTR Health Research', 'WHEY_PROTEIN', 'REPROVADO', 'Laudo ABENUTRI - Reprovado. Contém indícios de Amino Spiking. Variação Glicina: -7,91%, Treonina: 39,80%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Xpro Nutrition', 'Xpro Nutrition', 'WHEY_PROTEIN', 'REPROVADO', 'Laudo ABENUTRI - Reprovado. Contém indícios de Amino Spiking. Variação Glicina: Não informado, Treonina: Não informado.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('Iso-x Protein Complex', 'Xpro Nutrition', 'WHEY_PROTEIN', 'REPROVADO', 'Laudo ABENUTRI - Reprovado. Contém indícios de Amino Spiking. Variação Glicina: 53,42%, Treonina: 47,12%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
 ('W-Iso Isolate Whey', 'Xpro Nutrition', 'WHEY_PROTEIN', 'REPROVADO', 'Laudo ABENUTRI - Reprovado. Contém indícios de Amino Spiking. Variação Glicina: 845,95%, Treonina: 34,05%.', 'ABENUTRI', '2024-05-26', 1, 'ATIVO'),
