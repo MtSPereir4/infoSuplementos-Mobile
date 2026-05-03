@@ -16,6 +16,11 @@ export default [
       globals: {
         ...globals.node,
       },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
   },
   js.configs.recommended,
