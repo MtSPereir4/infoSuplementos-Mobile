@@ -1,8 +1,9 @@
 import SupplementRepository from '../repositories/SupplementRepository.js';
 
 class SupplementService {
-  async getAll() {
-    const data = await SupplementRepository.findAll();
+  // Adicionamei o parâmetro filters, com um objeto vazio como padrão
+  async getAll(filters = {}) {
+    const data = await SupplementRepository.findAll(filters);
     return { status: 200, data };
   }
 

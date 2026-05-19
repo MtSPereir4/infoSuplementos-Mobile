@@ -3,7 +3,10 @@ import SupplementService from '../services/SupplementService.js';
 class SupplementController {
   async index(req, res) {
     try {
-      const result = await SupplementService.getAll();
+      // Captura os filtros da URL (ex: /supplements?tipo=CREATINA&marca=Black%20Skull)
+      const filters = req.query;
+
+      const result = await SupplementService.getAll(filters);
       return res.status(result.status).json(result.data);
     } catch (error) {
       console.error(error);
