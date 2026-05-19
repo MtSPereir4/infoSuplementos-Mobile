@@ -5,7 +5,15 @@ import jwt from 'jsonwebtoken';
 class AuthController {
   async register(req, res) {
     try {
-      const { email } = req.body;
+      const { nome, email, senha } = req.body;
+
+      // VALIDAÇÃO BÁSICA NO CADASTRO
+      if (!nome || !email || !senha) {
+        return res
+          .status(400)
+          .json({ error: 'Nome, e-mail e senha são obrigatórios.' });
+      }
+
       const userExists = await UserRepository.findByEmail(email);
 
       if (userExists) {
@@ -24,21 +32,33 @@ class AuthController {
   async login(req, res) {
     try {
       const { email, senha } = req.body;
+
+      // VALIDAÇÃO BÁSICA NO LOGIN (Item 5)
+      if (!email || !senha) {
+        return res
+          .status(400)
+          .json({ error: 'E-mail e senha são obrigatórios.' });
+      }
+
       const user = await UserRepository.findByEmail(email);
 
       if (!user || !(await bcrypt.compare(senha, user.senha_hash))) {
         return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
       }
 
-      // Gera o Token JWT para o Mobile
       const token = jwt.sign(
         { id: user.id_usuario, tipo: user.tipo_usuario },
         process.env.JWT_SECRET,
         { expiresIn: '7d' }
       );
 
+      // CORREÇÃO DE NOMENCLATURA
       return res.json({
-        user: { id: user.id_usuario, nome: user.nome, email: user.email },
+        user: {
+          id: user.id_usuario,
+          nome: user.nome_usuario,
+          email: user.email_usuario,
+        },
         token,
       });
     } catch (error) {

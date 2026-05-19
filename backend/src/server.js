@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 
-import routes from './src/routes/routes.js';
+import routes from './routes/routes.js';
 
 dotenv.config();
 

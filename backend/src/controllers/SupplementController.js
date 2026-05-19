@@ -11,13 +11,19 @@ class SupplementController {
     }
   }
 
-  async getByType(req, res) {
+  // Novo método
+  async getById(req, res) {
     try {
-      const { type } = req.params; // Ex: /suplementos/type/CREATINA
-      const data = await SupplementRepository.findByType(type);
+      const { id } = req.params;
+      const data = await SupplementRepository.findById(id);
+
+      if (!data) {
+        return res.status(404).json({ error: 'Suplemento não encontrado.' });
+      }
+
       return res.json(data);
     } catch (error) {
-      return res.status(500).json({ error: 'Erro ao filtrar suplementos.' });
+      return res.status(500).json({ error: 'Erro ao buscar o suplemento.' });
     }
   }
 }

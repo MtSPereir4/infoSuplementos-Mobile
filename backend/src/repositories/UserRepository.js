@@ -5,12 +5,12 @@ class UserRepository {
   async create(userData) {
     const { nome, email, senha, tipo_usuario = 'COMUM' } = userData;
 
-    // Criptografia da senha (Salt de 10 rounds)
     const salt = await bcrypt.genSalt(10);
     const senha_hash = await bcrypt.hash(senha, salt);
 
+    // Alinhado com as colunas do banco: nome_usuario, email_usuario
     const sql = `
-      INSERT INTO usuarios (nome, email, senha_hash, tipo_usuario, status_usuario) 
+      INSERT INTO usuarios (nome_usuario, email_usuario, senha_hash, tipo_usuario, status_usuario) 
       VALUES (?, ?, ?, ?, 'ATIVO')
     `;
 
@@ -24,9 +24,11 @@ class UserRepository {
   }
 
   async findByEmail(email) {
-    const [rows] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [
-      email,
-    ]);
+    // Alinhado com a coluna do banco: email_usuario
+    const [rows] = await db.execute(
+      'SELECT * FROM usuarios WHERE email_usuario = ?',
+      [email]
+    );
     return rows[0];
   }
 }

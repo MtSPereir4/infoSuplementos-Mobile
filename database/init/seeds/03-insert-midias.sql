@@ -25,7 +25,7 @@ INSERT INTO midias (
 )
 SELECT 
     id_suplemento,
-    'Imagem Creatina'
+    'Imagem Creatina',
     'IMAGEM',
     'resources/creatina_generica.jpg'
 FROM suplementos
