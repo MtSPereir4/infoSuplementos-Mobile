@@ -1,29 +1,17 @@
-import UserRepository from '../repositories/UserRepository.js';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import AuthService from '../services/AuthService.js';
 
 class AuthController {
   async register(req, res) {
     try {
-      const { nome, email, senha } = req.body;
+      const result = await AuthService.register(req.body);
 
-      // VALIDAÇÃO BÁSICA NO CADASTRO
-      if (!nome || !email || !senha) {
-        return res
-          .status(400)
-          .json({ error: 'Nome, e-mail e senha são obrigatórios.' });
+      // Se o Service retornou um erro, devolve o status de erro
+      if (result.error) {
+        return res.status(result.status).json({ error: result.error });
       }
 
-      const userExists = await UserRepository.findByEmail(email);
-
-      if (userExists) {
-        return res.status(400).json({ error: 'E-mail já cadastrado.' });
-      }
-
-      const userId = await UserRepository.create(req.body);
-      return res
-        .status(201)
-        .json({ id: userId, message: 'Usuário criado com sucesso!' });
+      // Sucesso
+      return res.status(result.status).json(result.data);
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao registrar usuário.' });
     }
@@ -31,36 +19,13 @@ class AuthController {
 
   async login(req, res) {
     try {
-      const { email, senha } = req.body;
+      const result = await AuthService.login(req.body);
 
-      // VALIDAÇÃO BÁSICA NO LOGIN (Item 5)
-      if (!email || !senha) {
-        return res
-          .status(400)
-          .json({ error: 'E-mail e senha são obrigatórios.' });
+      if (result.error) {
+        return res.status(result.status).json({ error: result.error });
       }
 
-      const user = await UserRepository.findByEmail(email);
-
-      if (!user || !(await bcrypt.compare(senha, user.senha_hash))) {
-        return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
-      }
-
-      const token = jwt.sign(
-        { id: user.id_usuario, tipo: user.tipo_usuario },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-      );
-
-      // CORREÇÃO DE NOMENCLATURA
-      return res.json({
-        user: {
-          id: user.id_usuario,
-          nome: user.nome_usuario,
-          email: user.email_usuario,
-        },
-        token,
-      });
+      return res.status(result.status).json(result.data);
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao realizar login.' });
     }

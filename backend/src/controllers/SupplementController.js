@@ -1,27 +1,26 @@
-import SupplementRepository from '../repositories/SupplementRepository.js';
+import SupplementService from '../services/SupplementService.js';
 
 class SupplementController {
   async index(req, res) {
     try {
-      const data = await SupplementRepository.findAll();
-      return res.json(data);
+      const result = await SupplementService.getAll();
+      return res.status(result.status).json(result.data);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Erro ao buscar suplementos.' });
     }
   }
 
-  // Novo método
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await SupplementRepository.findById(id);
+      const result = await SupplementService.getById(id);
 
-      if (!data) {
-        return res.status(404).json({ error: 'Suplemento não encontrado.' });
+      if (result.error) {
+        return res.status(result.status).json({ error: result.error });
       }
 
-      return res.json(data);
+      return res.status(result.status).json(result.data);
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao buscar o suplemento.' });
     }
