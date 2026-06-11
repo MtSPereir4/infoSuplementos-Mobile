@@ -2,6 +2,9 @@ import db from '../database/index.js';
 
 class SupplementRepository {
   async findAll(filters) {
+    const tipo = filters.tipo || filters.type;
+    const search = filters.search || filters.nome;
+
     // 1. query base, garantindo que pegue apenas os ativos
     let sql = `
       SELECT s.*, m.caminho_midia 
@@ -13,9 +16,9 @@ class SupplementRepository {
     const values = [];
 
     // 2. Adiciona os filtros dinamicamente se eles existirem
-    if (filters.tipo) {
+    if (tipo) {
       sql += ` AND s.tipo_suplemento = ?`;
-      values.push(filters.tipo);
+      values.push(tipo);
     }
 
     if (filters.marca) {
@@ -23,9 +26,9 @@ class SupplementRepository {
       values.push(`%${filters.marca}%`);
     }
 
-    if (filters.nome) {
-      sql += ` AND s.nome_suplemento LIKE ?`;
-      values.push(`%${filters.nome}%`);
+    if (search) {
+      sql += ` AND (s.nome_suplemento LIKE ? OR s.marca_suplemento LIKE ?)`;
+      values.push(`%${search}%`, `%${search}%`);
     }
 
     const [rows] = await db.execute(sql, values);
