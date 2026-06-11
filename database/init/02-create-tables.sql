@@ -13,19 +13,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     PRIMARY KEY (id_usuario)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-CREATE TABLE IF NOT EXISTS favoritos (
-    id_favorito INT AUTO_INCREMENT PRIMARY KEY,
-	id_usuario INT NOT NULL,
-    id_suplemento INT NOT NULL,
-	data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_suplemento) REFERENCES suplementos(id_suplemento)
-        
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-;
-
-
 CREATE TABLE IF NOT EXISTS suplementos (
     id_suplemento INT NOT NULL AUTO_INCREMENT,
     id_usuario_cadastro INT NOT NULL,
@@ -45,6 +32,17 @@ CREATE TABLE IF NOT EXISTS suplementos (
     CONSTRAINT fk_usuario_cadastro
         FOREIGN KEY (id_usuario_cadastro)
         REFERENCES usuarios(id_usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS favoritos (
+    id_favorito INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_suplemento INT NOT NULL,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_favorito_usuario_suplemento (id_usuario, id_suplemento),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_suplemento) REFERENCES suplementos(id_suplemento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

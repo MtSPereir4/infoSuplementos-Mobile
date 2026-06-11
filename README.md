@@ -71,20 +71,17 @@ O projeto utiliza variáveis de ambiente para dados sensíveis.
 Crie um arquivo `.env` na raiz do projeto baseado no arquivo `.env.example`:
 
 ```env
-# Database
-DB_HOST=mysql
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=root
-DB_NAME=infosuplementos
-
-# Backend
+PORT=3333
+DB_HOST=localhost
+DB_PORT=3307
+DB_USER=app_user
+DB_PASS=app_pass
+DB_NAME=info_suplementos
 JWT_SECRET=supersecret
-API_PORT=3000
-
-# Docker
-MYSQL_ROOT_PASSWORD=root
 ```
+
+No Docker, o backend usa `DB_HOST=mysql`, pois se comunica com o serviço MySQL pela rede interna do Compose.
+Para acessar o MySQL pelo host, use a porta `3307`; dentro do Docker ele continua na porta `3306`.
 
 ---
 
@@ -94,8 +91,8 @@ Antes de iniciar o projeto, é necessário ter instalado:
 
 - Node.js
 - npm
-- MySQL
-- Expo CLI
+- Docker e Docker Compose
+- Expo Go no celular, ou Android Studio para emulador
 - Git
 
 ---
@@ -123,7 +120,7 @@ Isso instalará as dependências do backend e do mobile.
 
 Os seguintes passos devem ser executados no diretório raiz.
 
-1. Subir o backend e banco com Docker
+1. Subir o backend, banco e phpMyAdmin com Docker
 
 ```bash
 docker-compose up -d
@@ -135,17 +132,31 @@ docker-compose up -d
 npm run start:mobile
 ```
 
-ou:
+Esse comando detecta o IP LAN atual da máquina e grava `mobile/.env.local` automaticamente com `EXPO_PUBLIC_API_URL=http://SEU_IP_ATUAL:3333`.
+Se a detecção escolher a interface errada, informe o IP manualmente ao iniciar:
 
 ```bash
 cd mobile
-npx expo start
+API_HOST=SEU_IP_LOCAL npm run start:lan
 ```
+
+ou, para forçar o modo LAN recomendado para Expo Go:
+
+```bash
+npm run start:mobile:lan
+```
+
+Evite iniciar com `npx expo start` diretamente, pois esse comando não executa o script que atualiza o IP da API.
 
 3. Visualizar no celular
 
 - Instale o app Expo Go
 - Escaneie o QR Code exibido no terminal
+- Em dispositivo físico, o app tenta usar automaticamente o IP do servidor Expo para acessar `http://<ip-da-sua-maquina>:3333`.
+- Se aparecer `Network request failed`, abra `http://SEU_IP_LOCAL:3333/health` no navegador do celular. Se não carregar, o celular não está alcançando o backend pela rede.
+- Se necessário, crie `mobile/.env` a partir de `mobile/.env.example` e defina `EXPO_PUBLIC_API_URL=http://SEU_IP_LOCAL:3333` antes de iniciar o Expo. Isso só é necessário quando a detecção automática não funcionar.
+- Prefira iniciar o Expo em modo LAN, com celular e computador na mesma rede Wi-Fi. O modo Tunnel não expõe automaticamente sua API local na porta `3333`.
+- No emulador Android, o app pode acessar a máquina host por `http://10.0.2.2:3333`.
 
 ---
 
@@ -153,6 +164,7 @@ npx expo start
 
 - npm run dev:backend → inicia o backend
 - npm run start:mobile → inicia o mobile
+- npm run start:mobile:lan → inicia o mobile forçando modo LAN
 - npm run lint → verifica código
 - npm run format → formata código
 
