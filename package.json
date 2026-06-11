@@ -15,7 +15,8 @@
     "format:check": "prettier --check \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore",
     "start:backend": "npm --workspace backend run start",
     "dev:backend": "npm --workspace backend run dev",
-    "start:mobile": "npm --workspace mobile run start"
+    "start:mobile": "npm --workspace mobile run start",
+    "start:mobile:lan": "npm --workspace mobile run start:lan"
   },
   "keywords": [],
   "author": "",
