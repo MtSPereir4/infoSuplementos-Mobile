@@ -1,4 +1,4 @@
-# Arquitetura do projeto 
+# Arquitetura do projeto
 
 Este documento descreve a arquitetura geral do projeto InfoSuplementos, incluindo organização de diretórios, arquitetura do backend, banco de dados, Docker e fluxo da aplicação.
 
@@ -36,13 +36,14 @@ infosuplementos/
 ├── backend/            # API Node.js (regras de negócio e acesso ao banco)
 ├── mobile/             # Aplicação mobile (React Native + Expo)
 ├── database/           # Inits sql, migrations e seeds
-├── docker/             # Arquivos de configuração Docker
+├── docker-compose.yml  # Orquestra backend, MySQL e phpMyAdmin
+├── docker/             # Arquivos auxiliares de Docker
 ├── docs/               # Documentação do projeto
 ├── eslint.config.js    # Arquivo de configurações do eslint
 ├── .env                # Variáveis de ambiente
 ├── .env.example        # Exemplo do variáveis de ambiente
 ├── .gitignore          # Arquivos ignorados pelo Git
-├── .prettierrc         # Arquivo de configuração do prettier 
+├── .prettierrc         # Arquivo de configuração do prettier
 ├── .vscode             # Diretório com configurações recomendadas para a IDE
 ├── README.md       
 ```
@@ -55,21 +56,24 @@ O projeto utiliza variáveis de ambiente para configuração do sistema e dados 
 
 O arquivo .env deve ficar na raiz do projeto.
 
+Exemplo para rodar o backend localmente acessando o MySQL exposto pelo Docker:
+```env
+PORT=3333
+DB_HOST=localhost
+DB_PORT=3307
+DB_USER=app_user
+DB_PASS=app_pass
+DB_NAME=info_suplementos
+JWT_SECRET=chave_secreta
+```
+
+No Docker Compose, o backend usa `DB_HOST=mysql` e `DB_PORT=3306`, pois acessa o banco pela rede interna do Compose. A porta `3307` é usada apenas para acesso ao MySQL a partir do host.
+
+O app mobile usa `EXPO_PUBLIC_API_URL` para acessar a API. Em desenvolvimento, o script `mobile/scripts/write-api-env.js` gera `mobile/.env.local` automaticamente com a URL da API usando o IP LAN atual da máquina.
+
 Exemplo:
 ```env
-# Database
-DB_HOST=mysql
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=root
-DB_NAME=infosuplementos
-
-# Backend
-JWT_SECRET=supersecret
-API_PORT=3000
-
-# Docker
-MYSQL_ROOT_PASSWORD=root
+EXPO_PUBLIC_API_URL=http://192.168.1.67:3333
 ```
 
 ---
@@ -281,16 +285,17 @@ Esse diretório contém apenas a conexão com o banco de dados.
 ##### Exemplo:
 
 ```javascript
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    password: process.env.DB_PASS,
     database: process.env.DB_NAME
 });
 
-module.exports = pool;
+export default pool;
 ```
 
 #### Utils
