@@ -1,35 +1,27 @@
-import 'dotenv/config';
-
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import dotenv from 'dotenv';
+
+import routes from './routes/routes.js';
+
+dotenv.config();
 
 const app = express();
 
-// Configurações básicas
-app.use(express.json());
+// --- Middlewares ---
+app.use(helmet()); // Segurança nos headers HTTP
+app.use(morgan('dev')); // Log das requisições no terminal para debug
+app.use(cors()); // Libera o acesso para o app mobile
+app.use(express.json()); // Permite que a API entenda JSON no body
 
-// Segurança
-app.use(helmet());
+// --- Rotas ---
+app.use(routes);
 
-// CORS
-app.use(cors());
-
-// Logs
-app.use(morgan('dev'));
-
-// Rota de teste
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'API funcionando 🚀',
-  });
-});
-
-// Porta
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`🚀 API rodando na porta ${PORT}`);
+  console.log(`🔗 Teste local: http://localhost:${PORT}/supplements`);
 });

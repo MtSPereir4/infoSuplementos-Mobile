@@ -4,9 +4,22 @@ import globals from 'globals';
 
 export default [
   {
+    ignores: [
+      'node_modules',
+      '.vscode',
+      '*.config.js',
+      '*.lock',
+      'mobile/node_modules',
+      'backend/node_modules',
+    ],
     languageOptions: {
       globals: {
         ...globals.node,
+      },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
   },

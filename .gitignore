@@ -1,16 +1,40 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
 # dependências
 node_modules/
 
 # variáveis de ambiente
 .env
+.env*.local
 
 # build
-dist
 build
 
 # expo
-.expo
-.expo-shared
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# typescript
+*.tsbuildinfo
 
 # logs
 npm-debug.log
@@ -18,8 +42,13 @@ npm-debug.log
 # testes
 coverage
 
-# OS
+# macOS
 .DS_Store
+*.pem
+
+# generated native folders
+/ios
+/android
 
 #IDE
 .vscode/*
