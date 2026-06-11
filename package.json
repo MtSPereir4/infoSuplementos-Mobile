@@ -4,11 +4,19 @@
   "private": true,
   "description": "Mono-repo do projeto InfoSuplementos (backend + mobile)",
   "type": "module",
+  "workspaces": [
+    "backend",
+    "mobile"
+  ],
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "format": "prettier --write \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{js,ts,json,md}\" --ignore-path .prettierignore",
+    "start:backend": "npm --workspace backend run start",
+    "dev:backend": "npm --workspace backend run dev",
+    "start:mobile": "npm --workspace mobile run start",
+    "start:mobile:lan": "npm --workspace mobile run start:lan"
   },
   "keywords": [],
   "author": "",
