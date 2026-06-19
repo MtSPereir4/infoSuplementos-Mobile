@@ -8,6 +8,7 @@ import {
   Text,
   TextInput,
   View,
+  Platform,
 } from 'react-native';
 
 import { useAuth } from '../hooks/useAuth';
@@ -59,7 +60,10 @@ export default function HomeScreen({ navigation }) {
   function renderSupplement({ item }) {
     return (
       <Pressable
-        style={styles.card}
+        style={({ pressed }) => [
+          styles.card,
+          pressed && styles.cardPressed, // Efeito sutil ao clicar
+        ]}
         onPress={() =>
           navigation.navigate('SupplementDetail', {
             supplement: item,
@@ -68,15 +72,26 @@ export default function HomeScreen({ navigation }) {
         }
       >
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
-          <Text
+          <Text style={styles.cardTitle} numberOfLines={2}>
+            {item.name}
+          </Text>
+          <View
             style={[
               styles.badge,
-              item.approval === 'REPROVADO' && styles.badgeDanger,
+              item.approval === 'REPROVADO'
+                ? styles.badgeDanger
+                : styles.badgeSuccess,
             ]}
           >
-            {item.approval || 'SEM LAUDO'}
-          </Text>
+            <Text
+              style={[
+                styles.badgeText,
+                item.approval === 'REPROVADO' && styles.badgeTextDanger,
+              ]}
+            >
+              {item.approval || 'SEM LAUDO'}
+            </Text>
+          </View>
         </View>
         <Text style={styles.brand}>{item.brand}</Text>
         <Text style={styles.type}>{item.type}</Text>
@@ -87,7 +102,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <View>
+        <View style={styles.headerTextContainer}>
           <Text style={styles.title}>Buscar suplementos</Text>
           <Text style={styles.subtitle}>
             Consulte laudos sem precisar entrar na conta.
@@ -115,7 +130,8 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.searchArea}>
         <TextInput
           style={styles.input}
-          placeholder="Nome ou marca do suplemento"
+          placeholder="Pesquisar por nome ou marca..."
+          placeholderTextColor="#94A3B8"
           value={search}
           onChangeText={setSearch}
           returnKeyType="search"
@@ -172,17 +188,27 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {loading ? (
-        <ActivityIndicator style={styles.loading} size="large" />
+        <ActivityIndicator
+          style={styles.loading}
+          size="large"
+          color="#1f7a4d"
+        />
       ) : (
         <FlatList
           data={supplements}
           keyExtractor={(item) => String(item.id)}
           renderItem={renderSupplement}
           contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              {error || 'Nenhum suplemento encontrado.'}
-            </Text>
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>
+                {error || 'Nenhum suplemento encontrado.'}
+              </Text>
+              <Text style={styles.emptySubText}>
+                Tente ajustar os filtros ou os termos da sua pesquisa.
+              </Text>
+            </View>
           }
         />
       )}
@@ -193,134 +219,191 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f7f5',
+    backgroundColor: '#F8FAFC', // Fundo levemente mais claro e moderno (Slate 50)
   },
   header: {
-    alignItems: 'flex-start',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
-    gap: 12,
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 16,
+  },
+  headerTextContainer: {
+    flex: 1,
+    paddingRight: 16,
   },
   title: {
-    color: '#17211b',
-    fontSize: 26,
-    fontWeight: '700',
+    color: '#0F172A', // Texto quase preto para mais contraste
+    fontSize: 28,
+    fontWeight: '800',
+    letterSpacing: -0.5, // Deixa a fonte mais moderna
   },
   subtitle: {
-    color: '#66736b',
-    fontSize: 14,
-    marginTop: 4,
+    color: '#64748B',
+    fontSize: 15,
+    marginTop: 6,
+    lineHeight: 20,
   },
   sessionText: {
-    color: '#506056',
-    fontSize: 14,
-    marginBottom: 4,
-    paddingHorizontal: 20,
+    color: '#1f7a4d',
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 8,
+    paddingHorizontal: 24,
   },
   secondaryButton: {
-    borderColor: '#1f7a4d',
-    borderRadius: 8,
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
+    backgroundColor: '#EEF2FF', // Fundo sutil em vez de borda
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   secondaryButtonText: {
     color: '#1f7a4d',
     fontWeight: '700',
+    fontSize: 14,
   },
   searchArea: {
-    gap: 12,
-    paddingHorizontal: 20,
+    gap: 16,
+    paddingHorizontal: 24,
     paddingVertical: 12,
   },
   input: {
-    backgroundColor: '#ffffff',
-    borderColor: '#d8e0db',
-    borderRadius: 8,
-    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     fontSize: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    color: '#0F172A',
+    // Sombra sutil para o input
+    ...Platform.select({
+      ios: {
+        shadowColor: '#64748B',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   filters: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   filterButton: {
-    backgroundColor: '#ffffff',
-    borderColor: '#d8e0db',
-    borderRadius: 8,
-    borderWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 9,
+    backgroundColor: '#E2E8F0', // Fundo cinza suave quando inativo (Pill)
+    borderRadius: 24, // Bem arredondado
+    paddingHorizontal: 18,
+    paddingVertical: 10,
   },
   filterButtonActive: {
-    backgroundColor: '#1f7a4d',
-    borderColor: '#1f7a4d',
+    backgroundColor: '#1f7a4d', // Verde principal
   },
   filterButtonText: {
-    color: '#506056',
-    fontWeight: '700',
+    color: '#475569',
+    fontWeight: '600',
+    fontSize: 14,
   },
   filterButtonTextActive: {
-    color: '#ffffff',
+    color: '#FFFFFF',
   },
   loading: {
-    marginTop: 40,
+    marginTop: 60,
   },
   list: {
-    gap: 12,
-    padding: 20,
-    paddingBottom: 32,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+    paddingBottom: 40,
+    gap: 16, // Espaçamento maior entre os cards
   },
   card: {
-    backgroundColor: '#ffffff',
-    borderColor: '#dfe7e2',
-    borderRadius: 8,
-    borderWidth: 1,
-    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 20,
+    // Sombras modernas
+    ...Platform.select({
+      ios: {
+        shadowColor: '#64748B',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.08,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  cardPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }], // Efeito de apertar o card
   },
   cardHeader: {
-    alignItems: 'flex-start',
     flexDirection: 'row',
-    gap: 12,
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 12,
+    marginBottom: 8,
   },
   cardTitle: {
-    color: '#17211b',
+    color: '#0F172A',
     flex: 1,
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '700',
+    lineHeight: 24,
   },
   badge: {
-    backgroundColor: '#e4f4eb',
-    borderRadius: 6,
-    color: '#1f7a4d',
-    fontSize: 11,
-    fontWeight: '700',
-    overflow: 'hidden',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeSuccess: {
+    backgroundColor: '#ECFDF5', // Verde bem claro
   },
   badgeDanger: {
-    backgroundColor: '#fde8e4',
-    color: '#b83220',
+    backgroundColor: '#FEF2F2', // Vermelho bem claro
+  },
+  badgeText: {
+    color: '#059669', // Verde forte
+    fontSize: 12,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  badgeTextDanger: {
+    color: '#DC2626', // Vermelho forte
   },
   brand: {
-    color: '#506056',
-    fontSize: 14,
-    marginTop: 8,
+    color: '#64748B',
+    fontSize: 15,
+    fontWeight: '500',
   },
   type: {
-    color: '#77847b',
+    color: '#94A3B8',
     fontSize: 13,
     marginTop: 4,
+    textTransform: 'capitalize',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 60,
+    paddingHorizontal: 20,
   },
   emptyText: {
-    color: '#66736b',
-    fontSize: 15,
-    paddingTop: 32,
+    color: '#0F172A',
+    fontSize: 18,
+    fontWeight: '600',
     textAlign: 'center',
+    marginBottom: 8,
+  },
+  emptySubText: {
+    color: '#64748B',
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });
