@@ -69,12 +69,14 @@ JWT_SECRET=chave_secreta
 
 No Docker Compose, o backend usa `DB_HOST=mysql` e `DB_PORT=3306`, pois acessa o banco pela rede interna do Compose. A porta `3307` é usada apenas para acesso ao MySQL a partir do host.
 
-O app mobile usa `EXPO_PUBLIC_API_URL` para acessar a API. Em desenvolvimento, o script `mobile/scripts/write-api-env.js` gera `mobile/.env.local` automaticamente com a URL da API usando o IP LAN atual da máquina.
+O app mobile usa `EXPO_PUBLIC_API_URL` para acessar a API quando essa variável está configurada. Sem essa variável, em desenvolvimento, o app tenta montar a URL da API a partir do host informado pelo Expo em modo LAN.
 
 Exemplo:
 ```env
 EXPO_PUBLIC_API_URL=http://192.168.1.67:3333
 ```
+
+Em dispositivo físico com Expo Go, o fluxo recomendado é iniciar o Expo em modo LAN para que celular e notebook usem a mesma rede local. No emulador Android, o fallback usado pelo app é `http://10.0.2.2:3333`.
 
 ---
 

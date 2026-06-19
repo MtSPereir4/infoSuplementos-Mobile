@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "prestart": "node scripts/write-api-env.js",
-    "prestart:lan": "node scripts/write-api-env.js",
     "start": "expo start",
     "start:lan": "expo start --lan",
     "android": "expo start --android",
