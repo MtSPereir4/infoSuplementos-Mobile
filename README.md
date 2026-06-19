@@ -129,24 +129,16 @@ docker-compose up -d
 2. Iniciar o mobile com Expo
 
 ```bash
-npm run start:mobile
-```
-
-Esse comando detecta o IP LAN atual da máquina e grava `mobile/.env.local` automaticamente com `EXPO_PUBLIC_API_URL=http://SEU_IP_ATUAL:3333`.
-Se a detecção escolher a interface errada, informe o IP manualmente ao iniciar:
-
-```bash
-cd mobile
-API_HOST=SEU_IP_LOCAL npm run start:lan
-```
-
-ou, para forçar o modo LAN recomendado para Expo Go:
-
-```bash
 npm run start:mobile:lan
 ```
 
-Evite iniciar com `npx expo start` diretamente, pois esse comando não executa o script que atualiza o IP da API.
+Esse comando inicia o Expo em modo LAN. Nesse modo, o app tenta montar a URL da API usando o mesmo host informado pelo Expo Go, por exemplo `http://192.168.1.67:3333`.
+
+Se estiver usando emulador ou web, também é possível iniciar sem forçar LAN:
+
+```bash
+npm run start:mobile
+```
 
 3. Visualizar no celular
 
@@ -154,8 +146,8 @@ Evite iniciar com `npx expo start` diretamente, pois esse comando não executa o
 - Escaneie o QR Code exibido no terminal
 - Em dispositivo físico, o app tenta usar automaticamente o IP do servidor Expo para acessar `http://<ip-da-sua-maquina>:3333`.
 - Se aparecer `Network request failed`, abra `http://SEU_IP_LOCAL:3333/health` no navegador do celular. Se não carregar, o celular não está alcançando o backend pela rede.
-- Se necessário, crie `mobile/.env` a partir de `mobile/.env.example` e defina `EXPO_PUBLIC_API_URL=http://SEU_IP_LOCAL:3333` antes de iniciar o Expo. Isso só é necessário quando a detecção automática não funcionar.
-- Prefira iniciar o Expo em modo LAN, com celular e computador na mesma rede Wi-Fi. O modo Tunnel não expõe automaticamente sua API local na porta `3333`.
+- Se necessário, crie `mobile/.env` a partir de `mobile/.env.example` e defina `EXPO_PUBLIC_API_URL=http://SEU_IP_LOCAL:3333`. Isso só é necessário quando a detecção automática não funcionar.
+- Celular e computador devem estar na mesma rede Wi-Fi. O modo Tunnel do Expo não expõe automaticamente sua API local na porta `3333`.
 - No emulador Android, o app pode acessar a máquina host por `http://10.0.2.2:3333`.
 
 ---
